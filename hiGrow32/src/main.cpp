@@ -12,7 +12,6 @@
 #include <Wire.h>
 #include <SPI.h>
 
-
 #include "init_mqtt.h"
 #include "_publish.h"
 #include "_receive.h"
@@ -27,6 +26,10 @@ int x, y;
 uint32_t btCount = 0;
 uint8_t led;
 
+
+uint64_t chipid;
+char deviceid[21];
+
 void init_hardware()
 {
   pinMode(relayPin, OUTPUT);
@@ -38,6 +41,10 @@ void init_hardware()
   delay(10);
   Serial.println();
   Serial.println("Starting...");
+  chipid = ESP.getEfuseMac();
+  sprintf(deviceid, "%" PRIu64, chipid);
+  Serial.print("DeviceId: ");
+  Serial.println(deviceid);
 }
 
 void init_wifi()
@@ -67,7 +74,7 @@ void setup()
 
 void loop()
 {
-    // //    sync_advpub("prefix", "topic", "payload", "retain")
-    // mqtt->sync_advpub("", "/KIDBRIGHT/gearname/kb", String(btCount), false);
+  // //    sync_advpub("prefix", "topic", "payload", "retain")
+  // mqtt->sync_advpub("", "/KIDBRIGHT/gearname/kb", String(btCount), false);
   mqtt->loop();
 }

@@ -1,20 +1,22 @@
 #include <Arduino.h> 
 
 /* BOARD INFO */
-String DEVICE_NAME      = "KB-001"; 
+String DEVICE_NAME      = "hiGrow-001"; 
 
 /* WIFI INFO */ 
-String WIFI_SSID        = "ampere";
-String WIFI_PASSWORD    = "espertap";
+// String WIFI_SSID        = "ampere";
+// String WIFI_PASSWORD    = "espertap";
+String WIFI_SSID        = "T123456";
+String WIFI_PASSWORD    = "V4bTaMaTo";
 
 /* MQTT INFO */ 
-String MQTT_HOST        = "gb.netpie.io";
-String MQTT_USERNAME    = "j4RZnUdLQLEZOqR";
-String MQTT_PASSWORD    = "Ztt2Ec8TLm6EXGQyWnRkv2aueLE=";
-String MQTT_CLIENT_ID   = "su0QpRQr07EPm9oi";
-String MQTT_PREFIX      = "/KIDBRIGHT/gearname";
+String MQTT_HOST        = "mqtt.cmmc.io";
+String MQTT_USERNAME    = "";
+String MQTT_PASSWORD    = "";
+String MQTT_CLIENT_ID   = "";
+String MQTT_PREFIX      = "/hiGrow";
 int    MQTT_PORT        = 1883;
-int PUBLISH_EVERY       = 30L * 1000;
+int PUBLISH_EVERY       = 5L * 1000;
 int MQTT_CONNECT_TIMEOUT= 120; 
 
 
