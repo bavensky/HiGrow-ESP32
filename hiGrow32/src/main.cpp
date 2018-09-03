@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <Arduino.h>
 
 #ifdef ESP8266
 #include <ESP8266WiFi.h>
@@ -25,7 +24,6 @@ char myName[40];
 int x, y;
 uint32_t btCount = 0;
 uint8_t led;
-
 
 uint64_t chipid;
 char deviceid[21];
@@ -62,7 +60,7 @@ void init_wifi()
     delay(300);
   }
   Serial.println("WiFi Connected.");
-  digitalWrite(2, HIGH);
+  digitalWrite(33, HIGH);
 }
 
 void setup()
@@ -72,9 +70,18 @@ void setup()
   init_mqtt();
 }
 
+uint32_t preTime = 0;
+
 void loop()
 {
   // //    sync_advpub("prefix", "topic", "payload", "retain")
   // mqtt->sync_advpub("", "/KIDBRIGHT/gearname/kb", String(btCount), false);
+  uint32_t curTime = millis();
+  if (curTime - preTime >= (6*1000))
+  {
+    Serial.println("Going to sleep now");
+    esp_deep_sleep_start();
+    preTime = curTime;
+  }
   mqtt->loop();
 }

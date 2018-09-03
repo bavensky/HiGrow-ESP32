@@ -15,6 +15,10 @@ float t, h;
 int waterlevel;
 int lightlevel;
 
+#define uS_TO_S_FACTOR 1000000      /* Conversion factor for micro seconds to seconds */
+uint32_t  TIME_TO_SLEEP = 10 * 60L; /* Time ESP32 will go to sleep (in seconds) */
+
+
 extern int relayPinState;
 extern MqttConnector *mqtt;
 extern int relayPin;
@@ -31,7 +35,9 @@ void register_publish_hooks()
   strcpy(myName, DEVICE_NAME.c_str());
   mqtt->on_prepare_data_once([&](void) {
     Serial.println("initializing sensor...");
+    pinMode(LIGHT_PIN, OUTPUT);
     dht.begin();
+    esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
   });
 
   mqtt->on_before_prepare_data([&](void) {
@@ -57,9 +63,12 @@ void register_publish_hooks()
     }
     else
     {
-      data["temp_c"] = t;
-      data["humid_rh"] = h;
+      data["temperature_c"] = t * 100;
+      data["humidity_pervent_rh"] = h * 100;
     }
+
+    // Serial.println("Going to sleep now");
+    // esp_deep_sleep_start();
   },
                         PUBLISH_EVERY);
   mqtt->on_after_prepare_data([&](JsonObject *root) {
@@ -87,7 +96,7 @@ static void readSensor()
   lightlevel = map(lightlevel, 0, 4095, 0, 1023);
   lightlevel = constrain(lightlevel, 0, 1023);
 
-  Serial.println("=========================");
+  Serial.println("===========================");
   Serial.print(t);
   Serial.print("\t");
   Serial.print(h);
@@ -96,5 +105,5 @@ static void readSensor()
   Serial.print("\t");
   Serial.print(lightlevel);
   Serial.print("\n");
-  Serial.println("=========================");
+  Serial.println("===========================");
 }

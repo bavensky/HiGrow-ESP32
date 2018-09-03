@@ -45,7 +45,7 @@ Serial.println("[2]");
         | MODE_SUB_ONLY   |
         ===================
     */
-    config->mode = MODE_SUB_ONLY;
+    config->mode = MODE_BOTH;
     config->firstCapChannel = false;
 
     config->username = String(MQTT_USERNAME);
